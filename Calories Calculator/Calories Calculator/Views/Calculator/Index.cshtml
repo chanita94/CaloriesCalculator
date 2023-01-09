@@ -1,0 +1,89 @@
+﻿@using System.Collections;
+@using Calories_Calculator.Models;
+@model Result;
+
+<form method="post" asp-action="Add">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h1 class="text-primary">Needed Calories List</h1>
+        </div>
+        <br>
+        <div id="WeightFrame" class="mb-3">
+            <label>Weight:</label>
+            <br>
+            <input type="text" id="weight" class="form-control">
+        </div>
+        <div id="HeightFrame" class="mb-3">
+            <label>Height:</label>
+            <br>
+            <input type="text" id="height" class="form-control">
+        </div>
+        <div id="AgeFrame" class="mb-3">
+            <label>Age:</label>
+            <br>
+            <input type="text" id="age" class="form-control"> 
+        </div>
+        <div id="GenderFrame" >
+            <label class="form-check-label">Gender:</label>
+            <br>
+            <input class="form-check-input" type="radio" id="male" name="gender" value="male">
+            <label class="form-check-label" for="html">Male</label>
+            <input class="form-check-input"type="radio" id="female" name="gender" value="female">
+            <label class="form-check-label" for="html">Female</label>
+        </div>
+        <div id="ActivityFrame" class="mb-3">
+            <label>Activity Type:</label>
+            <br>
+            <select name="activities" id="activity" value="Select Type" class="form-select" >
+                <option value="none" selected disabled hidden>Select Type</option>
+                <option value="1.2">Sedentary</option>
+                <option value="1.375">Lightly Active</option>
+                <option value="1.55">Moderatel Active</option>
+                <option value="1.725">Active Active</option>
+                <option value="1.9">Very Active</option>
+            </select>
+        </div>
+        <br />
+        <div id="result1">
+            <label asp-for="Calories"></label>
+            <input asp-for="Calories" type="text" id="Calories" readonly="readonly">
+        </div>
+        <br>
+        <input id="Sum" type="button" class="btn btn-primary" onclick="calculate()" value="Sum">
+        <br>
+    </div>
+    <button type="submit" class="btn btn-primary" style="width:150px">Add</button>
+</form>
+
+
+<script>
+    function calculate() {
+        let Weight = Number(document.getElementById("weight").value)
+        let Height = Number(document.getElementById("height").value)
+        let Age = Number(document.getElementById("age").value)
+        let Genders = document.getElementsByName("gender")
+        let Gender = null
+        let Activity = Number(document.getElementById("activity").value)
+
+        let Total1 = 0
+        let Total2 = 0
+        for (let i of Genders) {
+            if (i.checked) {
+                Gender = i.value;
+                if (Gender == "female") {
+                    Total1 = Weight * 10 + Height * 6.25 - Age * 5 - 161
+                    Total2 = Total1 * Activity
+                    Total2 = Math.ceil(Total2)
+                } else {
+                    Total1 = Weight * 10 + Height * 6.25 - Age * 5 + 5
+                    Total2 = Total1 * Activity
+                    Total2 = Math.ceil(Total2)
+
+                }
+                document.getElementById("Calories").value = Total2
+            }
+        }
+    }
+
+</script>
+
